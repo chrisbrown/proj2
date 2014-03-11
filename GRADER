@@ -65,27 +65,48 @@ implemented the project.  Your description should include:
         public abstract boolean forceMove()
      MachinePlayer.java
         public MachinePlayer(int color)
+        /*A MachinePlayer constructor given the color of the piece.  Creates a MachinePlayer with a 
+        specified searchDepth for determining moves*/
+        
         public MachinePlayer(int color, int searchDepth)
+        /*A MachinePlayer constructor given the color and a given searchDepth for determining moves */
+        
         public Move chooseMove()
+        
+        
         public boolean opponentMove(Move m)
         public boolean forceMove(Move m)
         
      Move.java
         public Move(int x, int y)
-        public Move()
+        /*Construct an add move*/
+        
+        public Move(int xx1, int yy1, int xx2, int yy2)
+        /*Construct a step move*/
+        
         public String toString()
      Board.java
         public boolean isValidBoard()
         public boolean isValidNetwork(DList list)
+        /*Checks to see if the given DList network is a valid network.  Checks each Node to make sure that each move 
+        valid so that the network is a winning network*/
+        
         public void makeMove(Move m)
+        
         public void undo()
+        
         public DList getNetworks(Node n)
  
      DList.java (for network)
         public DList(DListNode node)
         public void add(DListNode n)
+        /*Adds a new DListNode to the current DList as a new piece is added to the network. (Front or end?) */
+        
         public int size()
+        /*Returns the size/length field of the current DList/number of Nodes in the network*/
+        
         public boolean contains(Object num)
+        /*Checks if the num Object is already used in the current DList*/
      DListNode.java (for board spaces, networks)
         public
 
