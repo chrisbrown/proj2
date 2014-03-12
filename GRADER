@@ -61,21 +61,46 @@ implemented the project.  Your description should include:
 
      Player.java
         public abstract Move chooseMove()
+        /*Returns a new Move by "this" player.  Internally records the move (updates the internal game board) as
+        a move by "this" player */
+        
         public abstract boolean opponentMove()
+        /*If the Move m is legal, records the move as a move by the opponent                                                                                                          
+        (updates the internal game board) and returns true.  If the move is                                                                                                         
+        illegal, returns false without modifying the internal state of "this"                                                                                                       
+        player.  This method allows your opponents to inform you of their moves. */
+        
         public abstract boolean forceMove()
+        /*If the Move m is legal, records the move as a move by "this" player                                                                                                         
+        (updates the internal game board) and returns true.  If the move is                                                                                                         
+        illegal, returns false without modifying the internal state of "this"                                                                                                       
+        player.  This method is used to help set up "Network problems" for your                                                                                                     
+        player to solve. */
+        
      MachinePlayer.java
         public MachinePlayer(int color)
-        /*A MachinePlayer constructor given the color of the piece.  Creates a MachinePlayer with a 
-        specified searchDepth for determining moves*/
+        /*A MachinePlayer constructor given the color of the piece (0 or 1).  Creates a MachinePlayer with a 
+        predetermined searchDepth for determining moves*/
         
         public MachinePlayer(int color, int searchDepth)
-        /*A MachinePlayer constructor given the color and a given searchDepth for determining moves */
+        /*A MachinePlayer constructor given the color(0 or 1) and a given searchDepth for determining moves */
         
         public Move chooseMove()
-        
+        /*Returns a new Move by "this" player.  Internally records the move (updates the internal game board) as
+        a move by "this" player*/
         
         public boolean opponentMove(Move m)
+        /*If the Move m is legal, records the move as a move by the opponent                                                                                                          
+        (updates the internal game board) and returns true.  If the move is                                                                                                         
+        illegal, returns false without modifying the internal state of "this"                                                                                                       
+        player.  This method allows your opponents to inform you of their moves. */
+        
         public boolean forceMove(Move m)
+        /*If the Move m is legal, records the move as a move by "this" player                                                                                                         
+        (updates the internal game board) and returns true.  If the move is                                                                                                         
+        illegal, returns false without modifying the internal state of "this"                                                                                                       
+        player.  This method is used to help set up "Network problems" for your                                                                                                     
+        player to solve. */
         
      Move.java
         public Move(int x, int y)
@@ -85,30 +110,73 @@ implemented the project.  Your description should include:
         /*Construct a step move*/
         
         public String toString()
+        /*A String representation of every mnove made*/
+        
      Board.java
-        public boolean isValidBoard()
+        public boolean isValidMove(Move m)
+        /*Determines if the Move m is a playable move that does not break any rules*/ 
+        
         public boolean isValidNetwork(DList list)
-        /*Checks to see if the given DList network is a valid network.  Checks each Node to make sure that each move 
+        /*Checks to see if the given DList network is a valid network.  Checks each Node to make sure that each move was 
         valid so that the network is a winning network*/
         
         public void makeMove(Move m)
+        /*Adds the input Move m onto the current board.  Acts as a board update for each player that adds
+        a Move to the board */
         
         public void undo()
+        /*Removes the last Move made on the current Board*/
         
         public DList getNetworks(Node n)
+        /*Returns a DList of the network that contains the input Node n.*/
  
-     DList.java (for network)
-        public DList(DListNode node)
-        public void add(DListNode n)
-        /*Adds a new DListNode to the current DList as a new piece is added to the network. (Front or end?) */
+     DList.java //for network
+        protected DListNode newNode(Object num, DList list, DListNode prev, DListNode next)
+        /*Calls the DListNode constructor*/
+        
+        public DList()
+        /*Constructs an empty DList with a sentinel*/
+        
+        public void insertFront(Object num)
+        /*Inserts a new DListNode with Object num to the front of current DList*/
+        
+        public void insertEnd(Object num)
+        /*Inserts a new DListNode with Object num to the end of current DList*/
+        
+        public DListNode front()
+        /*Returns the DListNode at the front of the current DList*/
+        
+        public DListNode back()
+        /*Returns the DListNode at the back of the current Dlist*/
         
         public int size()
         /*Returns the size/length field of the current DList/number of Nodes in the network*/
         
         public boolean contains(Object num)
-        /*Checks if the num Object is already used in the current DList*/
+        /*Checks if the num Object is already used in the current DList based on the item of the DListNodes*/
+        
      DListNode.java (for board spaces, networks)
-        public
+        public DListNode(Object num, DList myList, DListNode next, DListNode prev)
+        /*DListNode constructor that takes in an Object num as the color, DList myList as a pointer to the DList
+        to which the DListNode belongs, DListNode next as a pointer to the next DListNode in the network, and
+        DListNode prev as a pointer to the previous DListNode in the network*/
+        
+        public DListNode next()
+        /*Returns the DListNode following the current DListNode*/
+        
+        public DListNode prev()
+        /*Returns the DListNode prior to the current DListNode*/
+        
+        public void insertAfter(Object num)
+        /*Inserts a DListNode of Object num immediately following the current DListNode*/
+        
+        public void insertBefore(Object num)
+        /*Inserts a DListNode of Object num immediately before the current DListNode*/
+        
+        public void remove()
+        /*Removes the current DListNode from its respective Dlist (removes this piece from the network)*/
+        
+        
 
 You will probably need to change some of your design decisions as you go; be
 sure to modify this file to reflect these changes before you submit your
