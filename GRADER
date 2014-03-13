@@ -124,6 +124,10 @@ implemented the project.  Your description should include:
         
         public DList getNetworks(Node n)
         /*Returns a DList of the network that contains the input Node n.*/
+        
+        public int boardeval()
+        /*Returns the number assigned to evaluate the "score" of the board for determining if the move
+        is benefitial to the player*/
  
      DList.java //for network
         protected DListNode newNode(Object num, DList list, DListNode prev, DListNode next)
