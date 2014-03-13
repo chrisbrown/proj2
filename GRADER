@@ -62,11 +62,29 @@ implemented the project.  Your description should include:
   MODULES
 -----------
   1. Determining valid move (Sanket)
+     - Check (depending on player) if Move m is a valid move according
+       to the given rules. Implement in Board, as all players have
+       access to an instance of Board, and the validity depends on the
+       current state.
   2. Generating list of valid moves. (Sanket)
+     - Check for each possible move if it is a valid move. Implement
+       in board.
   3. Finding chips that form connections with a given chip. (Kunwoo)
+     - Cast out in each possible direction. If you hit a tile of
+       opposite color, stop. Create DList where the nodes are the
+       connected chips.
   4. Determining networks. (Chris)
+     - Get each connected chip from the chips in the starting
+       goal. For each following chip, get connected chips until you
+       reach a node in the end goal. Check to make sure that newly
+       added nodes have not been seen before- perhaps an alteration of
+       the lockNode method.
   5. Evaluation function. (Chris)
+     - This one is harder- The network structure lends itself well to
+       a graph- perhaps edge count would be a reasonable heuristic.
   6. Minimax. (Kunwoo)
+     - There are pseudocode implementations everywhere, but this will
+       go in chooseMove.
 
      Player.java
         public abstract Move chooseMove()
