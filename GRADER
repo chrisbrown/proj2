@@ -125,7 +125,7 @@ implemented the project.  Your description should include:
         public DList getNetworks(Node n)
         /*Returns a DList of the network that contains the input Node n.*/
         
-        public int boardeval()
+        public int boardEval()
         /*Returns the number assigned to evaluate the "score" of the board for determining if the move
         is benefitial to the player*/
  
