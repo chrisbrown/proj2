@@ -59,23 +59,25 @@ implemented the project.  Your description should include:
      description should also appear before the method in your code's
      comments.
 
+  MODULES
+-----------
+  1. Determining valid move (Sanket)
+  2. Generating list of valid moves. (Sanket)
+  3. Finding chips that form connections with a given chip. (Kunwoo)
+  4. Determining networks. (Chris)
+  5. Evaluation function. (Chris)
+  6. Minimax. (Kunwoo)
+
      Player.java
         public abstract Move chooseMove()
         /*Returns a new Move by "this" player.  Internally records the move (updates the internal game board) as
         a move by "this" player */
         
         public abstract boolean opponentMove()
-        /*If the Move m is legal, records the move as a move by the opponent                                                                                                          
-        (updates the internal game board) and returns true.  If the move is                                                                                                         
-        illegal, returns false without modifying the internal state of "this"                                                                                                       
-        player.  This method allows your opponents to inform you of their moves. */
-        
+        /*If the Move m is legal, records the move as a move by the opponent                                              (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method allows your opponents to inform you of their moves. */
+
         public abstract boolean forceMove()
-        /*If the Move m is legal, records the move as a move by "this" player                                                                                                         
-        (updates the internal game board) and returns true.  If the move is                                                                                                         
-        illegal, returns false without modifying the internal state of "this"                                                                                                       
-        player.  This method is used to help set up "Network problems" for your                                                                                                     
-        player to solve. */
+        /*If the Move m is legal, records the move as a move by "this" player                                             (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method is used to help set up "Network problems" for your                                           player to solve. */
         
      MachinePlayer.java
         public MachinePlayer(int color)
@@ -90,17 +92,10 @@ implemented the project.  Your description should include:
         a move by "this" player*/
         
         public boolean opponentMove(Move m)
-        /*If the Move m is legal, records the move as a move by the opponent                                                                                                          
-        (updates the internal game board) and returns true.  If the move is                                                                                                         
-        illegal, returns false without modifying the internal state of "this"                                                                                                       
-        player.  This method allows your opponents to inform you of their moves. */
-        
+        /*If the Move m is legal, records the move as a move by the opponent                                              (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method allows your opponents to inform you of their moves. */
+
         public boolean forceMove(Move m)
-        /*If the Move m is legal, records the move as a move by "this" player                                                                                                         
-        (updates the internal game board) and returns true.  If the move is                                                                                                         
-        illegal, returns false without modifying the internal state of "this"                                                                                                       
-        player.  This method is used to help set up "Network problems" for your                                                                                                     
-        player to solve. */
+        /*If the Move m is legal, records the move as a move by "this" player                                             (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method is used to help set up "Network problems" for your                                           player to solve. */
         
      Move.java
         public Move(int x, int y)
