@@ -124,8 +124,6 @@ implemented the project.  Your description should include:
         public boolean forceMove(Move m)
         /*If the Move m is legal, records the move as a move by "this" player   (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method is used to help set up "Network problems" for your                                           player to solve. */
         
-        public DList validMoves()
-        /*Returns a DList of all valid moves*/
         
         
      Move.java
@@ -151,6 +149,9 @@ implemented the project.  Your description should include:
         public boolean isValidNetwork(DList list)
         /*Checks to see if the given DList network is a valid network.  Checks each Node to make sure that each move was 
         valid so that the network is a winning network*/
+        
+        public DList validMoves(Player p)
+        /*Returns a DList of all valid moves*/
         
         public void makeMove(Move m)
         /*Adds the input Move m onto the current board.  Acts as a board update for each player that adds
