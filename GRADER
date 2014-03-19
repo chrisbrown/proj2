@@ -119,7 +119,11 @@ implemented the project.  Your description should include:
         /*If the Move m is legal, records the move as a move by the opponent                                              (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method allows your opponents to inform you of their moves. */
 
         public boolean forceMove(Move m)
-        /*If the Move m is legal, records the move as a move by "this" player                                             (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method is used to help set up "Network problems" for your                                           player to solve. */
+        /*If the Move m is legal, records the move as a move by "this" player   (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method is used to help set up "Network problems" for your                                           player to solve. */
+        
+        public DList validMoves()
+        /*Returns a DList of all valid moves*/
+        
         
      Move.java
         public Move(int x, int y)
