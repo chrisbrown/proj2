@@ -115,6 +115,9 @@ implemented the project.  Your description should include:
         /*Returns a new Move by "this" player.  Internally records the move (updates the internal game board) as
         a move by "this" player*/
         
+        private Best moveHelp(boolean side, int alpha, int beta)
+        /*Returns a Best object that is the best option for the player (score and Move)*/
+        
         public boolean opponentMove(Move m)
         /*If the Move m is legal, records the move as a move by the opponent                                              (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method allows your opponents to inform you of their moves. */
 
