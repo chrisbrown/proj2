@@ -131,6 +131,12 @@ implemented the project.  Your description should include:
         public String toString()
         /*A String representation of every mnove made*/
         
+     Best.java
+        public int score()
+        /*Returns the score*/
+        public Move move()
+        /*Returns the move*/
+        
      Board.java
         public boolean isValidMove(Move m)
         /*Determines if the Move m is a playable move that does not break any rules*/ 
@@ -152,6 +158,7 @@ implemented the project.  Your description should include:
         public int boardEval()
         /*Returns the number assigned to evaluate the "score" of the board for determining if the move
         is benefitial to the player*/
+        
  
      DList.java //for network
         protected DListNode newNode(Object num, DList list, DListNode prev, DListNode next)
