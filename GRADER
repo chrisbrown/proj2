@@ -153,7 +153,7 @@ implemented the project.  Your description should include:
         public DList validMoves(Player p)
         /*Returns a DList of all valid moves*/
         
-        public void makeMove(Move m)
+        public void makeMove(Move m, Player p)
         /*Adds the input Move m onto the current board.  Acts as a board update for each player that adds
         a Move to the board */
         
