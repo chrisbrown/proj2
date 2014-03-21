@@ -163,6 +163,11 @@ implemented the project.  Your description should include:
         public DList getNetworks(Node n)
         /*Returns a DList of the network that contains the input Node n.*/
         
+        public DList connections(int x, int y)
+        /*Cast out in each possible direction. If you hit a tile of 
+          opposite color, stop. Create DList where the nodes are the
+          connected chips.
+        
         public int boardEval()
         /*Returns the number assigned to evaluate the "score" of the board for determining if the move
         is benefitial to the player*/
