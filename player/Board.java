@@ -90,6 +90,6 @@ public class Board{
 
 
     public boolean hasNetworks(){
-        return (getNetworks().size() != 0);xs   
+        return (getNetworks().size() != 0);  
     }
 }
