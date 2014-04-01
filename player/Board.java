@@ -48,7 +48,7 @@ public class Board{
                 connected.insertFront(table[x][j].item);
             }break;
         }
-        for(int i = x + 1, j = y + 1 ; i < DIMENSION j < DIMENSION; i++, j++){
+        for(int i = x + 1, j = y + 1 ; i < DIMENSION, j < DIMENSION; i++, j++){
             if(table[i][j] == null && table[i][j].item == null){
                 continue;
             }elif(table[i][j].item == color){
@@ -68,23 +68,14 @@ public class Board{
             }break;
         }
         
-        for(int i = 0, j = 0 ; i < x j < y; i++, j++){
+        for(int i = 0, j = 0 ; i < x, j < y; i++, j++){
             if(table[i][j] == null && table[i][j].item == null){
                 continue;
             }elif(table[i][j].item == color){
                 connected.insertFront(table[i][j].item);
             }break;
         }
-       
-        for(int i = x+1 ; i < DIMENSION ; i++){
-            for(int j = 0 ; j < y ; j++){
-                if(table[i][j] == null && table[i][j].item == null){
-                    continue;
-                }elif(table[i][j].item == color){
-                    connected.insertFront(table[i][j].item);
-                }break;
-            }
-        }
+    }    
         
         
 
