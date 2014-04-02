@@ -24,7 +24,7 @@ public class Board{
 
     public DList connections(int x, int y){
         DList connected = new DList();
-        if(table[x][y] == null && table[x][y].getItem() == null){
+        if(table[x][y] == null || table[x][y].getItem() == null){
             return connected;
         }
         int color = (int)table[x][y].getItem();
@@ -84,8 +84,8 @@ public class Board{
             }break;
         }
         return connected;
-    }    
-        
+    }
+
     public DList validMoves(){
         DList listOMoves = new DList();
         Move testMove;
@@ -119,43 +119,38 @@ public class Board{
         return listOMoves;
     }
 
-
+    /** Enforces rules 1 and 2 **/
     public boolean isValidMove(Move m){
         int x = m.x1;
         int y = m.y1;
         
-        if(x == 0 || y == 0 || x == DIMENSION-1 || y== DIMENSION-1){
+        if((x == 0 && y == 0) 
+           || (x == DIMENSION-1 && y == DIMENSION-1)
+           || (x == 0 && y == DIMENSION - 1)
+           || (x == DIMENSION - 1 && y == 0)){
             return false;
         }
         
-        int color = checkColor();
-        
-        if(color == 1){
-            if(y == 0 || y == 7){
-                for(int i = 1; i<DIMENSION-1; i++){
-                    if(x == i)
-                        return false;
-                }        
+        if(owner.color == 1){
+            if(y == 0 || y == DIMENSION - 1){
+                return false;
             }
         }       
         else{
-            if(x == 0 || x == 7){
-                for(int i = 1; i<DIMENSION-1; i++){
-                    if(y == i)
-                        return false;
-                }        
+            if(x == 0 || x == DIMENSION - 1){
+                return false;
             }
         }
 
-        return isValidMove(m, m.x1, m.y1);
+        return ruleThree(m, m.x1, m.y1);
     }
 
-    private boolean isValidMove(Move m, int oX, int oY){
-        //DListNode history = null;
+    private boolean ruleThree(Move m, int oX, int oY){
+        DListNode history = null;
         if(m.moveKind == 0)
             return true;
         if(m.moveKind == 2){
-            //history = table[oX][oY];
+            history = table[oX][oY];
             table[m.x2][m.y2] = null;
         }
         int numSurrounds = 0;
@@ -175,18 +170,23 @@ public class Board{
         }
         
         if(numSurrounds > 1){
+            table[m.x2][m.y2] = history;
             return false;
         }
-        else{
+
+        if(numSurrounds == 1){
             if(xToCheck == m.x1 && yToCheck == m.x2){
+                table[m.x2][m.y2] = history;
                 return true;
             }
             else{
-                return isValidMove(m, xToCheck, yToCheck);
+                table[m.x2][m.y2] = history;
+                return ruleThree(m, xToCheck, yToCheck)
             }
-        }
-    
-        //table[m.x2][m.y2] = null;
+            else{
+                table[m.x2][m.y2] = history;
+                return true;
+            }       
     }
 
     private int checkColor(){
@@ -213,5 +213,9 @@ public class Board{
     }
     public boolean hasNetworks(){
         return (getNetworks().size() != 0);  
+    }
+
+    public DList getNetworks() {
+        
     }
 }
