@@ -53,6 +53,13 @@ public class MachinePlayer extends Player {
         if(this.board.hasNetworks()){
             return myBest;
         }
+        if(searchdepth == 0){
+          if(side == COMPUTER){
+            alpha = this.board.boardEval();
+          } else {
+            beta = this.board.boardEval();
+          }
+        }
         if(side == COMPUTER){
             myBest.bestscore = alpha;
         }else{

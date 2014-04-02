@@ -192,10 +192,24 @@ public class Board{
     private int checkColor(){
         return owner.color;
     }
+
     public void makeMove(Move m){
-    	if(m.moveKind == 1){
+        history.push(this);
+    	if(m.moveKind == Move.ADD){
     		table[m.x1][m.y1] = new DListNode(owner.color);
-    	}
+    	}else if (m.movekind == Move.STEP){
+            table[m.x2][m.y2] = null;
+            table[m.x1][m.y1] = new DListNode(owner.color);
+        }
+    }
+
+    private void copy(Board board){
+        table = board.table;
+        owner = board.owner;
+    }
+    public void undo(){
+        Board b = history.pop();
+        this.copy(b);
     }
     public boolean hasNetworks(){
         return (getNetworks().size() != 0);  
