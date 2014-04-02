@@ -2,11 +2,11 @@
 
 package player;
 
-public int depth;
-public int color;
-public Board board;
-public final boolean COMPUTER = true;
-public final boolean HUMAN = false; 
+import list.DList;
+import list.DListNode;
+import list.ListNode;
+
+
 
 /**
  *  An implementation of an automatic Network player.  Keeps track of moves
@@ -14,6 +14,12 @@ public final boolean HUMAN = false;
  */
 
 public class MachinePlayer extends Player {
+	
+	public int depth;
+	public int color;
+	public Board board;
+	public final boolean COMPUTER = true;
+	public final boolean HUMAN = false; 
 
   // Creates a machine player with the given color.  Color is either 0 (black)
   // or 1 (white).  (White has the first move.)
@@ -34,7 +40,7 @@ public class MachinePlayer extends Player {
   // Returns a new move by "this" player.  Internally records the move (updates
   // the internal game board) as a move by "this" player.
   public Move chooseMove() {
-      Best bestchoice = moveHelp(COMPUTER, DOUBLE.NEGATIVE_INFINITY, DOUBLE.POSITIVE_INFINITY, this.depth);
+      Best bestchoice = moveHelp(COMPUTER, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, this.depth);
       return bestchoice.move();
   } 
 
@@ -48,23 +54,24 @@ public class MachinePlayer extends Player {
             return myBest;
         }
         if(side == COMPUTER){
-            myBest.score = alpha;
+            myBest.bestscore = alpha;
         }else{
-            myBest.score = beta;
+            myBest.bestscore = beta;
         }
-        DListNode node = moveset.front();
-        myBest.move = node;
-        while(node != null && searchdepth >0){
-            this.board.makeMove(node);
+        ListNode node = moveset.front();
+        Move mv = (Move) node.getItem();
+        myBest.bestmove = mv;
+        while(mv != null && searchdepth >0){
+            this.board.makeMove(mv);
             reply = moveHelp(!side, alpha, beta, searchdepth-1);
             this.board.undo();
             if((side == COMPUTER) && (reply.score() >  myBest.score())){
-                myBest.move = node;
-                myBest.score = reply.score();
+                myBest.bestmove = mv;
+                myBest.bestscore = reply.score();
                 alpha = reply.score();
             }else if ((side == HUMAN) && (reply.score() < myBest.score())){
-                myBest.move = node;
-                myBest.score = reply.score();
+                myBest.bestmove = mv;
+                myBest.bestscore = reply.score();
                 beta = reply.score();
             }
             if(alpha >= beta){
@@ -74,12 +81,6 @@ public class MachinePlayer extends Player {
         }
         return myBest;  
     }
-                    
-    private int otherPlayer(){
-        if(color == 0){
-            return 1;
-        }return 0;
-    }
 
   // If the Move m is legal, records the move as a move by the opponent
   // (updates the internal game board) and returns true.  If the move is
@@ -87,7 +88,7 @@ public class MachinePlayer extends Player {
   // player.  This method allows your opponents to inform you of their moves.
   public boolean opponentMove(Move m) {
       if(this.board.isValidMove(m)){
-          this.board.makeMove(m, otherPlayer(this.color);
+          this.board.makeMove(m);
           return true;
       }else{    
           return false;
@@ -101,7 +102,7 @@ public class MachinePlayer extends Player {
   // player to solve.
   public boolean forceMove(Move m) {
       if(this.board.isValidMove(m)){
-          this.board.makeMove(m, this.color);
+          this.board.makeMove(m);
           return true;
       }else{
           return false;

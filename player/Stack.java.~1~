@@ -1,0 +1,28 @@
+/*Stack.java*/
+
+package player;
+
+SList stack;
+
+public class Stack{
+
+	public Stack(){
+		stack = new SList();
+	}
+
+	public Object push(Object o){
+		stack.insertFront(o);
+		return o;
+	}
+
+	public Object pop(){
+		Object o = stack.front();
+		stack.front().remove();
+		return o;
+	}
+
+	public Object peek(){
+		return stack.front();
+	}
+
+}

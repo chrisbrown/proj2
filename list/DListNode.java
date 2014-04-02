@@ -24,14 +24,31 @@ public class DListNode extends ListNode {
    *  @param l the list this node is in.
    *  @param p the node previous to this node.
    *  @param n the node following this node.
+ * @throws InvalidNodeException 
    */
-  DListNode(Object i, DList l, DListNode p, DListNode n) {
-    item = i;
+  public DListNode(Object i, DList l, DListNode p, DListNode n){
+    try {
+		setItem(i);
+	} catch (InvalidNodeException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     myList = l;
     prev = p;
     next = n;
   }
-
+  
+  public DListNode(Object i) {
+	  try {
+		setItem(i);
+	} catch (InvalidNodeException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  myList = null;
+	  prev = null;
+	  next = null;
+  }
   /**
    *  isValidNode returns true if this node is valid; false otherwise.
    *  An invalid node is represented by a `myList' field with the value null.
