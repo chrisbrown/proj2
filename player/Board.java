@@ -23,117 +23,117 @@ public class Board{
         owner = p;
     }
     //*find all connections at node on (x,y) *//	
-    public DListNode[] connections(int x, int y){
-        final int N = 0;
-        final int NE = 1;
-        final int E = 2;
-        final int SE = 3;
-        final int S = 4;
-        final int SW = 5;
-        final int W = 6;
-        final int NW = 7;
-       
-        //set up DListNode array of colors
+    public DListNode[] connections(DListNode node){
+            
+        int x = -1;
+        int y = -1;
+           
+        for(int r = 0; r < DIMENSION; r++){
+            for(int c = 0; c < DIMENSION; c++){
+                if(table[r][c] == node)
+                    x = r;
+                    y = c;
+           }
+        }
+           
         DListNode[] connected = new DListNode[8];
         if(table[x][y] == null || table[x][y].getItem() == null){
                 return connected;
-            }
-        int color = (int)table[x][y].getItem();
-        int[] directions = [N, NE, E, SE, S, SW, W, NW];
-        //scroll through each direction and apply the respective cast
-        for(int i ; directions){
-                switch(i) {
-                        case N: connected = castN(x, y, color, connected);
-                        break;
- 
-                        case NE: connected = castNE(x, y, color, connected);
-                        break;
- 
-                        case E: connected = castE(x, y, color, connected);
-                        break;
- 
-                        case SE: connected = castSE(x, y, color, connected);
-                        break;
-                       
-                        case S: connected = castS(x, y, color, connected);
-                        break;
-                       
-                        case SW: connected = castSW(x, y, color, connected);
-                        break;
- 
-                        case W: connected = castW(x, y, color, connected);
-                        break;
- 
-                        case NW: connected = castNW(x, y, color, connected);
-                        break;
-                       
-                        default: break;
-                }
         }
-        return connected
+        int color = (Integer)table[x][y].getItem();
+        int[] directions = {N, NE, E, SE, S, SW, W, NW};
+        for(int i : directions){
+            switch(i) {
+                case N: connected = castN(x, y, color, connected);
+                break;
+     
+                case NE: connected = castNE(x, y, color, connected);
+                break;
+     
+                case E: connected = castE(x, y, color, connected);
+                break;
+     
+                case SE: connected = castSE(x, y, color, connected);
+                break;
+                           
+                case S: connected = castS(x, y, color, connected);
+                break;
+                           
+                case SW: connected = castSW(x, y, color, connected);
+                break;
+     
+                case W: connected = castW(x, y, color, connected);
+                break;
+     
+                case NW: connected = castNW(x, y, color, connected);
+                break;
+                           
+                default: break;
+            }
+        }
+        return connected;
     }
-    
-    //Helper methods for connections; casting out in each direction       
+               
     private DListNode[] castN(int x, int y, int color, DListNode[] connected){
         for(int j = y+1 ; j < DIMENSION; j++){
             if(table[x][j] == null && table[x][j].getItem() == null){
                 continue;
-            }else if((int)table[x][j].getItem() == color){
-                connected[N]=table[x][j].getItem();
+            }else if((Integer)table[x][j].getItem() == color){
+                connected[N]= table[x][j];
             }break;
         }
         return connected;
     }
-   
+       
     private DListNode[] castS(int x, int y, int color, DListNode[] connected){
         for(int j = 0 ; j < y ; j++){
             if(table[x][j] == null && table[x][j].getItem() == null){
                 continue;
-            }else if((int)table[x][j].getItem() == color){
-                connected[S]=table[x][j].getItem();
+            }else if((Integer)table[x][j].getItem() == color){
+                connected[S]=table[x][j];
             }break;
         }
         return connected;
     }
-   
-        private DListNode[] castE(int x, int y, int color, DListNode[] connected){
+       
+    private DListNode[] castE(int x, int y, int color, DListNode[] connected){
         for(int i = x+1 ; i < DIMENSION; i++){
-                if(table[i][y] == null && table[i][y].getItem() == null){
+            if(table[i][y] == null && table[i][y].getItem() == null){
                 continue;
-                }else if((int)table[i][y].getItem() == color){
-                connected[E]= table[i][y].getItem();
-                }break;
+            }else if((Integer)table[i][y].getItem() == color){
+                connected[E]= table[i][y];
+            }break;
         }
         return connected;
     }
-   
+       
     private DListNode[] castW(int x, int y, int color, DListNode[] connected){
         for(int i = 0 ; i < x ; i++){
             if(table[i][y] == null && table[i][y].getItem() == null){
                 continue;
-            }else if((int)table[i][y].getItem() == color){
-                connected[W] = table[i][y].getItem();
+            }else if((Integer)table[i][y].getItem() == color){
+                connected[W] = table[i][y];
             }break;
         }
         return connected;
     }
-   
+       
     private DListNode[] castNE(int x, int y, int color, DListNode[] connected){
         for(int i = x + 1, j = y + 1 ; i < DIMENSION && j < DIMENSION; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
                 continue;
-            }else if((int)table[i][j].getItem() == color){
-                connected[NE] = table[i][j].getItem();
+            }else if((Integer)table[i][j].getItem() == color){
+                connected[NE] = table[i][j];
             }break;
         }
         return connected;
     }
     private DListNode[] castSE(int x, int y, int color, DListNode[] connected){
-                for(int i = x + 1, j = 0 ; i < DIMENSION && j < y; i++, j++){
+        for(int i = x + 1, j = 0 ; i < DIMENSION && j < y; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
                 continue;
-            }else if((int)table[i][j].getItem() == color){
-                connected[SE] = table[i][j].getItem();          
+            }else if((Integer)table[i][j].getItem() == color){
+                connected[SE] = table[i][j];          
             }break;
         }
         return connected;
@@ -142,8 +142,8 @@ public class Board{
         for(int i = 0, j = y + 1 ; i < x && j < DIMENSION; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
                 continue;
-            }else if((int)table[i][j].getItem() == color){
-                connected[NW] = table[i][j].getItem();
+            }else if((Integer)table[i][j].getItem() == color){
+                connected[NW] = table[i][j];
             }break;
         }
         return connected;
@@ -152,8 +152,8 @@ public class Board{
         for(int i = 0, j = 0 ; i < x && j < y; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
                 continue;
-            }else if((int)table[i][j].getItem() == color){
-                connected[SW] = table[i][j].getItem();
+            }else if((Integer)table[i][j].getItem() == color){
+                connected[SW] = table[i][j];
             }break;
         }
         return connected;
