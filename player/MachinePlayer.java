@@ -34,7 +34,7 @@ public class MachinePlayer extends Player {
   // Returns a new move by "this" player.  Internally records the move (updates
   // the internal game board) as a move by "this" player.
   public Move chooseMove() {
-      Best bestchoice = moveHelp(COMPUTER, DOUBLE.NEGATIVE_INFINTY, DOUBLE.POSITIVE_INFINITY, this.depth);
+      Best bestchoice = moveHelp(COMPUTER, DOUBLE.NEGATIVE_INFINITY, DOUBLE.POSITIVE_INFINITY, this.depth);
       return bestchoice.move();
   } 
 
