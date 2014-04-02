@@ -53,6 +53,7 @@ public class MachinePlayer extends Player {
         if(this.board.hasNetworks()){
             return myBest;
         }
+        // if at the bottom of the search, applies the score of the board to alpha/beta //
         if(searchdepth == 0){
           if(side == COMPUTER){
             alpha = this.board.boardEval();
@@ -60,18 +61,23 @@ public class MachinePlayer extends Player {
             beta = this.board.boardEval();
           }
         }
+        //determines scores within the searchdepth //
         if(side == COMPUTER){
             myBest.bestscore = alpha;
         }else{
             myBest.bestscore = beta;
         }
+        //create a set of valid moves and find a move
         ListNode node = moveset.front();
         Move mv = (Move) node.getItem();
         myBest.bestmove = mv;
+        //minimax wtih alpha/beta pruning to find the best move
         while(mv != null && searchdepth >0){
             this.board.makeMove(mv);
+            //go one level deeper in search
             reply = moveHelp(!side, alpha, beta, searchdepth-1);
             this.board.undo();
+            //alpha-beta pruning: set alpha or beta dependent on what the search layer is
             if((side == COMPUTER) && (reply.score() >  myBest.score())){
                 myBest.bestmove = mv;
                 myBest.bestscore = reply.score();
@@ -81,6 +87,7 @@ public class MachinePlayer extends Player {
                 myBest.bestscore = reply.score();
                 beta = reply.score();
             }
+            //returns the Best when alpha is >= beta
             if(alpha >= beta){
                 return myBest;
             }
@@ -88,6 +95,7 @@ public class MachinePlayer extends Player {
             node = node.next();
             } catch (InvalidNodeException e) {}
         }
+        //returns a move even if there is no Best move
         return myBest;  
     }
 
