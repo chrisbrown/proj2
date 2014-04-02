@@ -5,6 +5,7 @@ package player;
 import stack.Stack;
 import list.DList;
 import list.DListNode;
+import list.InvalidNodeException;
 
 public class Board{
 
@@ -147,8 +148,9 @@ public class Board{
 
     private boolean ruleThree(Move m, int oX, int oY){
         DListNode history = null;
-        if(m.moveKind == 0)
+        if(m.moveKind == 0) {
             return true;
+        }
         if(m.moveKind == 2){
             history = table[oX][oY];
             table[m.x2][m.y2] = null;
@@ -159,8 +161,9 @@ public class Board{
 
         for(int r = -1; r <= 1; r++){
             for(int c = -1; c <= 1; c++){
-                if(r == 0 && c == 0)
+                if(r == 0 && c == 0) {
                     continue;
+                }
                 if(table[oX + r][oY + c].getItem() != null){
                         numSurrounds++;
                         xToCheck = oX + r;
@@ -181,12 +184,12 @@ public class Board{
             }
             else{
                 table[m.x2][m.y2] = history;
-                return ruleThree(m, xToCheck, yToCheck)
+                return ruleThree(m, xToCheck, yToCheck);
             }
-            else{
-                table[m.x2][m.y2] = history;
-                return true;
-            }       
+        } else {
+            table[m.x2][m.y2] = history;
+            return true;
+        }
     }
 
     private int checkColor(){
@@ -197,7 +200,7 @@ public class Board{
         history.push(this);
     	if(m.moveKind == Move.ADD){
     		table[m.x1][m.y1] = new DListNode(owner.color);
-    	}else if (m.movekind == Move.STEP){
+    	}else if (m.moveKind == Move.STEP){
             table[m.x2][m.y2] = null;
             table[m.x1][m.y1] = new DListNode(owner.color);
         }
@@ -208,14 +211,34 @@ public class Board{
         owner = board.owner;
     }
     public void undo(){
-        Board b = history.pop();
+        Board b = this;
+        try {
+        b = (Board) history.pop();
+        } catch (InvalidNodeException e){
+        
+        }
         this.copy(b);
     }
     public boolean hasNetworks(){
-        return (getNetworks().size() != 0);  
+        return (getNetworks().length() != 0);  
     }
 
     public DList getNetworks() {
-        
+        DList networks = new DList();
+        return networks;
     }
-}
+
+    public double boardEval() {
+        double score = 0.0;
+        return score;
+    }
+    public static void main (String args[]){
+		Player black = new MachinePlayer(0);
+		Player white = new MachinePlayer(1);
+		
+		black.forceMove(new Move(0,0));
+		white.forceMove(new Move(0,0));
+    }
+
+ }
+

@@ -5,7 +5,7 @@ package player;
 import list.DList;
 import list.DListNode;
 import list.ListNode;
-
+import list.InvalidNodeException;
 
 
 /**
@@ -84,7 +84,9 @@ public class MachinePlayer extends Player {
             if(alpha >= beta){
                 return myBest;
             }
+            try {
             node = node.next();
+            } catch (InvalidNodeException e) {}
         }
         return myBest;  
     }
