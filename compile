@@ -1,0 +1,3 @@
+javac -g list/*.java
+javac -g stack/*.java
+javac -g player/*.java
