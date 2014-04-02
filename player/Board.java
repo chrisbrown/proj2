@@ -222,16 +222,125 @@ public class Board{
     public boolean hasNetworks(){
         return (getNetworks().length() != 0);  
     }
-
+    /** Gets any current networks in the board. Assumes connections does
+     *  not give any nodes in the same direction.
+     **/
     public DList getNetworks() {
         DList networks = new DList();
+        DListNode[] start = getStartNodes();
+        DListNode[] end = getEndNodes();
+        if (goals == null) {
+            return networks;
+        }
+        for (int i = 0; i < start.length; i++) {
+            //Get a network from each start node.
+            DList network = checkConnections(start[i], end, 1);
+            if (network != null) {
+                //If there is a network, add it to the list of networks.
+                networks.insertBack(network);
+            }
+        }
         return networks;
+    }
+    /** getNetwork recursive helper. **/
+    private DList checkConnections(DListNode currNode, DListNode[] endGoal, int step
+                                   , DList currNet) {
+        DListNode[] cons = connections(currNode);
+        //Base case. If the current node is an end goal, and is long enough, it is a network.
+        if (contains(endGoal, currNode) && step >= 6){
+            return currNet;
+        } else if (cons.length() == 0) { //No connections? No network!
+            return null;
+        } else { //Look for networks through the following connections.
+            for (int i = 0; i < cons.length; i++) {
+                DList nextNet = currNet;
+                cons[i].setVisit();//Marks a node as visited. Needs to be implemented.
+                nextNet.insertBack(cons[i]);
+                DList newNet = checkConnections(cons[i], endGoal, step + 1, nextNet);
+                if (newNet != null) {
+                    return newNet;
+                }
+            }
+        }
+    }
+    /** Checks if a Node is in a DListNode array. */
+    private boolean contains(DListNode[] items, DListNode item) {
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] == item) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Gets the nodes in a goal for the current player. */
+    private DListNode[] getStartNodes() {
+        int goalSize = DIMENSION - 2;
+        DListNode[] nodes = new DListNode[goalSize];
+        int added = 0;
+        int end = DIMENSION - 1;
+        if (color == 0) {
+            //Check the black goal
+            for (int x = 0; x < DIMENSION; x++) {
+                if (table[x][0] != null && table[x][0].getItem() == color) {
+                    added++;
+                    nodes[x] = table[x][0];
+                }
+                /*if (table[x][end] != null && table[x][end].getItem() == color) {
+                    nodes[x + goalSize] = table[x][end];
+                    }*/
+            }
+        } else {
+            //Check the white goals
+            for (int y = 0; y < DIMENSION; y++) {
+                if (table[0][y] != null && table[0][y].getItem() == color) {
+                    added++;
+                    nodes[y] = table[0][y];
+                }
+                /*if (table[end][y] != null && table[end][y].getItem() == color) {
+                    nodes[y + goalSize] = table[end][y];
+                    }*/
+            }
+        }
+        if (added == 0) {
+            return null;
+        } else {
+            return nodes;
+        }
+    }
+
+    private DListNode[] getStartNodes() {
+        int goalSize = DIMENSION - 2;
+        DListNode[] nodes = new DListNode[goalSize];
+        int added = 0;
+        int end = DIMENSION - 1;
+        if (color == 0) {
+            //Check the black goal
+            for (int x = 0; x < DIMENSION; x++) {
+                if (table[x][end] != null && table[x][end].getItem() == color) {
+                    nodes[x + goalSize] = table[x][end];
+                }
+            }
+        } else {
+            //Check the white goals
+            for (int y = 0; y < DIMENSION; y++) {
+                if (table[end][y] != null && table[end][y].getItem() == color) {
+                    nodes[y + goalSize] = table[end][y];
+                }
+            }
+        }
+        if (added == 0) {
+            return null;
+        } else {
+            return nodes;
+        }
     }
 
     public double boardEval() {
         double score = 0.0;
         return score;
     }
+
     public static void main (String args[]){
 		Player black = new MachinePlayer(0);
 		Player white = new MachinePlayer(1);
