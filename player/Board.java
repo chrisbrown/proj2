@@ -7,12 +7,16 @@ public class Board{
     protected final int DIMENSION = 8;
     public DListNode[][] table;
     private Stack history;
-    
+    public Player owner;
     
     public Board(){
         table = new DListNode[DIMENSION][DIMENSION];
     }
     
+    public Board(Player p) {
+        table = new DListNode[DIMENSION][DIMENSION];
+        owner = p;
+    }
 
     public DList connections(int x, int y){
         DList connected = new DList();
@@ -21,49 +25,49 @@ public class Board{
         }
         int color = (int)table[x][y].item;
         for(int i = x+1 ; i < DIMENSION; i++){
-            if(table[i][y] == null && table[i][y].item == null){
+            if(table[i][y] == null && table[i][y].item == null){//DOES HE MEAN || BECAUSE THIS MIGHT BLOW UP
                 continue;
-            }elif(table[i][y].item == color){
+            }else if(table[i][y].item == color){
                 connected.insertFront(table[i][y].item);
             }break;
         }
         for(int i = 0 ; i < x ; i++){
             if(table[i][y] == null && table[i][y].item == null){
                 continue;
-            }elif(table[i][y].item == color){
+            }else if(table[i][y].item == color){
                 connected.insertFront(table[i][y].item);
             }break;
         }
         for(int j = y+1 ; j < DIMENSION; j++){
             if(table[x][j] == null && table[x][j].item == null){
                 continue;
-            }elif(table[x][j].item == color){
+            }else if(table[x][j].item == color){
                 connected.insertFront(table[x][j].item);
             }break;
         }
         for(int j = 0 ; j < y ; j++){
             if(table[x][j] == null && table[x][j].item == null){
                 continue;
-            }elif(table[x][j].item == color){
+            }else if(table[x][j].item == color){
                 connected.insertFront(table[x][j].item);
             }break;
         }
         for(int i = x + 1, j = y + 1 ; i < DIMENSION, j < DIMENSION; i++, j++){
             if(table[i][j] == null && table[i][j].item == null){
                 continue;
-            }elif(table[i][j].item == color){
+            }else if(table[i][j].item == color){
                 connected.insertFront(table[i][j].item);
             }break;
         }for(int i = x + 1, j = 0 ; i < DIMENSION, j < y; i++, j++){
             if(table[i][j] == null && table[i][j].item == null){
                 continue;
-            }elif(table[i][j].item == color){
+            }else if(table[i][j].item == color){
                 connected.insertFront(table[i][j].item);
             }break; 
         }for(int i = 0, j = y + 1 ; i < x , j < DIMENSION; i++, j++){
             if(table[i][j] == null && table[i][j].item == null){
                 continue;
-            }elif(table[i][j].item == color){
+            }else if(table[i][j].item == color){
                 connected.insertFront(table[i][j].item);
             }break;
         }
@@ -71,7 +75,7 @@ public class Board{
         for(int i = 0, j = 0 ; i < x, j < y; i++, j++){
             if(table[i][j] == null && table[i][j].item == null){
                 continue;
-            }elif(table[i][j].item == color){
+            }else if(table[i][j].item == color){
                 connected.insertFront(table[i][j].item);
             }break;
         }
