@@ -74,11 +74,7 @@ public class MachinePlayer extends Player {
       myBest.bestmove = mv;
       //minimax wtih alpha/beta pruning to find the best move
       while(mv != null && searchdepth >0){
-          if(color == 0){
-            this.board.makeMove(mv, 0);
-          }else{
-            this.board.makeMove(mv, 1);
-          }
+          this.board.makeMove(mv, color);
           //go one level deeper in search
           reply = moveHelp(!side, alpha, beta, searchdepth-1);
           this.board.undo();
@@ -134,7 +130,7 @@ public class MachinePlayer extends Player {
   // player.  This method is used to help set up "Network problems" for your
   // player to solve.
   public boolean forceMove(Move m) {
-      if(this.board != null &&  this.board.isValidMove(m)){
+      if(this != null && this.board != null &&  this.board.isValidMove(m)){
           if(color == 0){
             this.board.makeMove(m,0);
           }

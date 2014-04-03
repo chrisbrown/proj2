@@ -22,7 +22,8 @@ public class Board{
     public final int W = 6;
     public final int NW = 7;
     private int score = 0;
-    public boolean isUpdatingEnemy = false
+    public boolean isUpdatingEnemy = false;
+    public boolean isUpdatingPlayer = false;
     
     // Create an 8x8 board with known player
     public Board(MachinePlayer p) {
@@ -431,10 +432,10 @@ public class Board{
         DListNode[] nodes = new DListNode[goalSize];
         int added = 0;
         int end = DIMENSION - 1;
-        if (color == 0) {
+        if (owner.color == 0) {
             //Check the black goal
             for (int x = 0; x < DIMENSION; x++) {
-                if (table[x][0] != null && table[x][0].getItem() == color) {
+                if (table[x][0] != null && table[x][0].getItem() == new Integer(owner.color)) {
                     added++;
                     nodes[x] = table[x][0];
                 }
@@ -445,7 +446,7 @@ public class Board{
         } else {
             //Check the white goals
             for (int y = 0; y < DIMENSION; y++) {
-                if (table[0][y] != null && table[0][y].getItem() == color) {
+                if (table[0][y] != null && table[0][y].getItem() == new Integer(owner.color)) {
                     added++;
                     nodes[y] = table[0][y];
                 }
@@ -457,27 +458,29 @@ public class Board{
         if (added == 0) {
             return null;
         } else {
+            score += (nodes.length * 4); //boardEval gets four point for each start node
             return nodes;
         }
     }
+    
 
-    // Retrieves Start nodes for Networks
-    private DListNode[] getStartNodes() {
+    // Retrieves End nodes for Networks
+    private DListNode[] getEndNodes() {
         int goalSize = DIMENSION - 2;
         DListNode[] nodes = new DListNode[goalSize];
         int added = 0;
         int end = DIMENSION - 1;
-        if (color == 0) {
+        if (owner.color == 0) {
             //Check the black goal
             for (int x = 0; x < DIMENSION; x++) {
-                if (table[x][end] != null && table[x][end].getItem() == color) {
+                if (table[x][end] != null && table[x][end].getItem() == new Integer(owner.color)) {
                     nodes[x + goalSize] = table[x][end];
                 }
             }
         } else {
             //Check the white goals
             for (int y = 0; y < DIMENSION; y++) {
-                if (table[end][y] != null && table[end][y].getItem() == color) {
+                if (table[end][y] != null && table[end][y].getItem() == new Integer(owner.color)) {
                     nodes[y + goalSize] = table[end][y];
                 }
             }
@@ -485,6 +488,7 @@ public class Board{
         if (added == 0) {
             return null;
         } else {
+            score += (nodes.length * 2); //boardEval gets two point for each end node
             return nodes;
         }
     }
