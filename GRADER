@@ -9,9 +9,9 @@ Second team member's login: cs61b-em
 Third team member's name (if any): Sanket Padmanabhan
 Third team member's login: cs61b-xz
 
-IMPORTANT:  Once you've submitted Project 2 once, the same team member should
-submit always.  If a different teammate must submit, inform cs61b@cory.eecs of
-all the details.  Include a complete list of team members, and let us know
+IMPORTANT: Once you've submitted Project 2 once, the same team member should
+submit always. If a different teammate must submit, inform cs61b@cory.eecs of
+all the details. Include a complete list of team members, and let us know
 which submission you want graded.
 
 If you've submitted your project once, or even written a substantial amount of
@@ -24,8 +24,8 @@ Does your program compile without errors?
 Have you tested your program on the 61B lab machines?
 
 
-Did you successfully implement game tree search?  Did you successfully
-implement alpha-beta pruning?  Are there any limitations on it?  What is the
+Did you successfully implement game tree search? Did you successfully
+implement alpha-beta pruning? Are there any limitations on it? What is the
 default number of search levels set by the one-parameter MachinePlayer
 constructor (or is it a variable-depth search)?
 
@@ -41,21 +41,21 @@ Is there anything else the graders should know to help them read your project?
 
 
 Describe the classes, modules, and interfaces you designed before and while you
-implemented the project.  Your description should include:
-  -  A list of the classes your program uses.
-  -  A list of each of the "modules" used in or by MachinePlayer, similar to
+implemented the project. Your description should include:
+  - A list of the classes your program uses.
+  - A list of each of the "modules" used in or by MachinePlayer, similar to
      the list in the "Teamwork" section of the README (but hopefully more
-     detailed).  (If you're using a list class, that should probably count as
+     detailed). (If you're using a list class, that should probably count as
      a separate module.)
-  -  For each module, list the class(es) the module is implemented in.
-  -  For each module, say which of your team members implemented it.
-  -  For each module, describe its interface--specifically, the prototype and
+  - For each module, list the class(es) the module is implemented in.
+  - For each module, say which of your team members implemented it.
+  - For each module, describe its interface--specifically, the prototype and
      behavior of each method that is available for external callers (outside
-     the module) to call.  Don't include methods that are only meant to be
+     the module) to call. Don't include methods that are only meant to be
      called from within the module.
 
      For each method, provide (1) a method prototype and (2) a complete,
-     unambiguous description of the behavior of the method/module.  This
+     unambiguous description of the behavior of the method/module. This
      description should also appear before the method in your code's
      comments.
 
@@ -83,7 +83,7 @@ implemented the project.  Your description should include:
        reach a node in the end goal. Check to make sure that newly
        added nodes have not been seen before- perhaps an alteration of
        the lockNode method.
-  5. Evaluation function. (Sanket)
+  5. Evaluation function. (Chris)
      public int boardEval()
      - This one is harder- The network structure lends itself well to
        a graph- perhaps edge count would be a reasonable heuristic.
@@ -94,35 +94,35 @@ implemented the project.  Your description should include:
 
      Player.java
         public abstract Move chooseMove()
-        /*Returns a new Move by "this" player.  Internally records the move (updates the internal game board) as
+        /*Returns a new Move by "this" player. Internally records the move (updates the internal game board) as
         a move by "this" player */
         
         public abstract boolean opponentMove()
-        /*If the Move m is legal, records the move as a move by the opponent                                              (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method allows your opponents to inform you of their moves. */
+        /*If the Move m is legal, records the move as a move by the opponent (updates the internal game board) and returns true. If the move is illegal, returns false without modifying the internal state of "this" player. This method allows your opponents to inform you of their moves. */
 
         public abstract boolean forceMove()
-        /*If the Move m is legal, records the move as a move by "this" player                                             (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method is used to help set up "Network problems" for your                                           player to solve. */
+        /*If the Move m is legal, records the move as a move by "this" player (updates the internal game board) and returns true. If the move is illegal, returns false without modifying the internal state of "this" player. This method is used to help set up "Network problems" for your player to solve. */
         
      MachinePlayer.java
         public MachinePlayer(int color)
-        /*A MachinePlayer constructor given the color of the piece (0 or 1).  Creates a MachinePlayer with a 
+        /*A MachinePlayer constructor given the color of the piece (0 or 1). Creates a MachinePlayer with a
         predetermined searchDepth for determining moves*/
         
         public MachinePlayer(int color, int searchDepth)
         /*A MachinePlayer constructor given the color(0 or 1) and a given searchDepth for determining moves */
         
         public Move chooseMove()
-        /*Returns a new Move by "this" player.  Internally records the move (updates the internal game board) as
+        /*Returns a new Move by "this" player. Internally records the move (updates the internal game board) as
         a move by "this" player*/
         
         private Best moveHelp(boolean side, int alpha, int beta)
         /*Returns a Best object that is the best option for the player (score and Move)*/
         
         public boolean opponentMove(Move m)
-        /*If the Move m is legal, records the move as a move by the opponent                                              (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method allows your opponents to inform you of their moves. */
+        /*If the Move m is legal, records the move as a move by the opponent (updates the internal game board) and returns true. If the move is illegal, returns false without modifying the internal state of "this" player. This method allows your opponents to inform you of their moves. */
 
         public boolean forceMove(Move m)
-        /*If the Move m is legal, records the move as a move by "this" player   (updates the internal game board) and returns true.  If the move is                                               illegal, returns false without modifying the internal state of "this"                                             player.  This method is used to help set up "Network problems" for your                                           player to solve. */
+        /*If the Move m is legal, records the move as a move by "this" player (updates the internal game board) and returns true. If the move is illegal, returns false without modifying the internal state of "this" player. This method is used to help set up "Network problems" for your player to solve. */
         
         
         
@@ -144,17 +144,17 @@ implemented the project.  Your description should include:
         
      Board.java
         public boolean isValidMove(Move m)
-        /*Determines if the Move m is a playable move that does not break any rules*/ 
+        /*Determines if the Move m is a playable move that does not break any rules*/
         
         public boolean isValidNetwork(DList list)
-        /*Checks to see if the given DList network is a valid network.  Checks each Node to make sure that each move was 
+        /*Checks to see if the given DList network is a valid network. Checks each Node to make sure that each move was
         valid so that the network is a winning network*/
         
         public DList validMoves(Player p)
         /*Returns a DList of all valid moves*/
         
         public void makeMove(Move m, int color)
-        /*Adds the input Move m onto the current board.  Acts as a board update for each player that adds
+        /*Adds the input Move m onto the current board. Acts as a board update for each player that adds
         a Move to the board */
         
         public void undo()
@@ -163,9 +163,9 @@ implemented the project.  Your description should include:
         public DList getNetworks(Node n)
         /*Returns a DList of the network that contains the input Node n.*/
         
-        public DList connections(int x, int y)
-        /*Cast out in each possible direction. If you hit a tile of 
-          opposite color, stop. Create DList where the nodes are the
+        public DListNode[] connections(int x, int y)
+        /*Cast out in each possible direction. If you hit a tile of
+          opposite color, stop. Create DListNode where the nodes are the
           connected chips.
         
         public int boardEval()
@@ -223,5 +223,5 @@ implemented the project.  Your description should include:
 
 You will probably need to change some of your design decisions as you go; be
 sure to modify this file to reflect these changes before you submit your
-project.  Your design of classes and interfaces will be worth 10% of your
+project. Your design of classes and interfaces will be worth 10% of your
 grade.

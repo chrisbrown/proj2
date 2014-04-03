@@ -93,6 +93,8 @@ public class MachinePlayer extends Player {
             try {
             node = node.next();
             } catch (InvalidNodeException e) {}
+            mv = (Move)node.getItem();
+            myBest.bestmove = mv;
         }
         return myBest;  
     }

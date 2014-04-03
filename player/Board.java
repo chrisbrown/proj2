@@ -39,21 +39,8 @@ public class Board{
     }
     	
 
-        public DListNode[] connections(DListNode node){
+        public DListNode[] connections(int x, int y){
             
-            int x = -1;
-            int y = -1;
-           
-           for(int r = 0; r < DIMENSION; r++){
-               for(int c = 0; c < DIMENSION; c++){
-                   if(table[r][c] == node)
-                       x = r;
-                       y = c;
-               }
-           }
-           if(x == -1 || y == -1){
-             System.out.println("Problem in connections");
-           }
             DListNode[] connected = new DListNode[8];
             if(table[x][y] == null || table[x][y].getItem() == null){
                     return connected;
@@ -220,9 +207,12 @@ public class Board{
             color = opponentColor();
         else
             color = owner.color;
-        
+        //System.out.println(x + ", "+y);
+        if(x < 0 || x > DIMENSION - 1 || y < 0 || y > DIMENSION - 1){
+            return false;
+        }
         if((x == 0 && y == 0) 
-           || (x == DIMENSION-1 && y == DIMENSION-1)
+           || (x == DIMENSION - 1 && y == DIMENSION - 1)
            || (x == 0 && y == DIMENSION - 1)
            || (x == DIMENSION - 1 && y == 0)){
             return false;
@@ -243,26 +233,25 @@ public class Board{
             return false;
         }
         
-        return ruleFour(m, m.x1, m.y1);
+        return ruleFour(m, m.x1, m.y1, null);
     }
 
-    private boolean ruleFour(Move m, int oX, int oY){
+    private boolean ruleFour(Move m, int oX, int oY, DListNode oldNode){
         int color;
         if(isUpdatingEnemy)
             color = opponentColor();
         else
             color = owner.color;
-        
         table[m.x1][m.y1] = new DListNode(color);
         
-        DListNode oldNode;
-        oldNode = null;
         if(m.moveKind == 0) {
             return true;
         }
         if(m.moveKind == 2 && (m.x1 == oX && m.y1 == oY)){
             oldNode = table[m.x2][m.y2];
             table[m.x2][m.y2] = null;
+         //   System.out.println("Intermediary 1 : \n" + this);
+          //  System.out.println("OldNode:" + oldNode + " goes at: " + m.x2 + ", " + m.y2);
         }
         
         int numSurrounds = 0;
@@ -288,8 +277,10 @@ public class Board{
         }
         
         if(numSurrounds > 1){
+            //System.out.println("It seems that I was wrong.");
             if(m.moveKind == 2){    
                 table[m.x2][m.y2] = oldNode;
+                //System.out.println(table[m.x2][m.y2] + " at " + m.x2 + ", " + m.y2);
             }
             table[m.x1][m.y1] = null;
             return false;
@@ -309,7 +300,7 @@ public class Board{
                 }
                 table[m.x1][m.y1] = null;
                 
-                return ruleFour(m, xToCheck, yToCheck);
+                return ruleFour(m, xToCheck, yToCheck, oldNode);
             }
         } else {
             if(m.moveKind == 2){    
@@ -361,7 +352,7 @@ public class Board{
             //Get a network from each start node.
             DList currNet = new DList();
             currNet.insertBack(start[i]);
-            DList network = checkConnections(start[i], end, 1, currNet);
+            DList network = checkConnections(start, i, end, 1, currNet);
             if (network != null) {
                 //If there is a network, add it to the list of networks.
                 networks.insertBack(network);
@@ -370,12 +361,19 @@ public class Board{
         return networks;
     }
     /** getNetwork recursive helper. **/
-    private DList checkConnections(DListNode currNode, DListNode[] endGoal, int step
+    private DList checkConnections(DListNode[]NodeList, int currNodeIndex, DListNode[] endGoal, int step
                                    , DList currNet) {
+        DListNode currNode = NodeList[currNodeIndex];
         if(step >= 4){
             score += step; //for every possible connection over 4 points, score increases by that connection's length
         }
-        DListNode[] cons = connections(currNode);
+        DListNode[] cons;
+        if(owner.color == 0){
+            cons = connections(currNodeIndex, 0);
+        }
+        else{
+            cons = connections(0, currNodeIndex);
+        }
         //Base case. If the current node is an end goal, and is long enough, it is a network.
         if (contains(endGoal, currNode) && step >= 6){
             return currNet;
@@ -386,7 +384,7 @@ public class Board{
                 DList nextNet = currNet;
                 cons[i].setVisit();//Marks a node as visited. Needs to be implemented.
                 nextNet.insertBack(cons[i]);
-                DList newNet = checkConnections(cons[i], endGoal, step + 1, nextNet);
+                DList newNet = checkConnections(cons, i, endGoal, step + 1, nextNet);
                 if (newNet != null) {
                     return newNet;
                 }
@@ -469,7 +467,7 @@ public class Board{
         }
     }
 
-    public double boardEval() {
+   public double boardEval() {
         for(int x = 0; x < DIMENSION; x++){
             for(int y = 0; y < DIMENSION; y++){
                 if(table[x][y] != null){
@@ -479,9 +477,11 @@ public class Board{
                          if(r == 0 && c == 0){
                              continue;
                          } 
-                         if(table[x+r][y+c] != null){
-                             score += 1; //2 points for each pair 
-                         }
+                         if(x+r < DIMENSION && x+r > -1 && y+c <DIMENSION && y+c >-1){
+                            if(table[x+r][y+c] != null){
+                                score += 1; //2 points for each pair 
+                            }
+                        }
                       }  
                     }
                 
@@ -490,7 +490,6 @@ public class Board{
         }
         return score;
     }
-    
     @Override
     public String toString(){
       String rv = "[\n";
@@ -609,9 +608,13 @@ public class Board{
         black.opponentMove(new Move(0,6));
         black.forceMove(new Move(1,7));
         
-        
         System.out.println("Step 1: \n" + black);
-
+       // black.forceMove(new Move(3,3,3,2));
+       // System.out.println("Step 1.1: \n" + black);
+        
+        black.forceMove(new Move(3,10,3,2));
+        System.out.println("Out of Bounds: \n" + black);
+        
         
     }
   public static void main (String args[]){
@@ -620,8 +623,9 @@ public class Board{
     //   testIsValidMove2(); 
      //  testValidMoves();
       //  testIsValidMove3(); 
-      testChooseMove();  
-      //testIsValidMove4();
+     
+      //testChooseMove();  
+      testIsValidMove4();
   }
  }
 
