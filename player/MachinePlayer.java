@@ -130,8 +130,13 @@ public class MachinePlayer extends Player {
   // player.  This method is used to help set up "Network problems" for your
   // player to solve.
   public boolean forceMove(Move m) {
-      if(this.board != null && this.board.isValidMove(m)){
-          this.board.makeMove(m);
+      if(this.board != null &&  this.board.isValidMove(m)){
+          if(color == 0){
+            this.board.makeMove(m,0);
+          }
+          else{
+            this.board.makeMove(m,1);
+          }
           return true;
       }else{
           return false;

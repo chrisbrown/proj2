@@ -333,13 +333,13 @@ public class Board{
     }
 
     // Applies the given Move m to the board
-    public void makeMove(Move m){
+    public void makeMove(Move m, int color){
         history.push(this);
-    	if(m.moveKind == Move.ADD){
-    		table[m.x1][m.y1] = new DListNode(owner.color);
-    	}else if (m.moveKind == Move.STEP){
+        if(m.moveKind == Move.ADD){
+            table[m.x1][m.y1] = new DListNode(color);
+        }else if (m.moveKind == Move.STEP){
             table[m.x2][m.y2] = null;
-            table[m.x1][m.y1] = new DListNode(owner.color);
+            table[m.x1][m.y1] = new DListNode(color);
         }
     }
 
