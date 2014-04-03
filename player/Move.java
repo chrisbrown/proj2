@@ -55,7 +55,7 @@ public class Move {
     case QUIT:
       return "[quit]";
     case ADD:
-      return "[add to " + x1 + "" + y1 + "]";
+      return "[add to " + x1 + "," + y1 + "]";
     default:
       return "[step from " + x2 + "" + y2 + " to " + x1 + "" + y1 + "]";
     }

@@ -4,6 +4,7 @@ package stack;
 
 import list.InvalidNodeException;
 import list.SList;
+import list.SListNode;
 
 public class Stack{
 
@@ -20,7 +21,7 @@ public class Stack{
     public Object pop() throws InvalidNodeException{
         Object o = stack.front();
         stack.front().remove();
-        return o;
+        return ((SListNode)o).getItem();
     }
 
     public Object peek(){

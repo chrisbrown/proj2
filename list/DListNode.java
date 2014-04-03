@@ -17,6 +17,8 @@ public class DListNode extends ListNode {
 
   protected DListNode prev;
   protected DListNode next;
+  protected boolean visited;
+
 
   /**
    *  DListNode() constructor.
@@ -36,6 +38,8 @@ public class DListNode extends ListNode {
     myList = l;
     prev = p;
     next = n;
+    visited = false;
+ 
   }
   
   public DListNode(Object i) {
@@ -48,6 +52,8 @@ public class DListNode extends ListNode {
 	  myList = null;
 	  prev = null;
 	  next = null;
+          visited = false;
+
   }
   /**
    *  isValidNode returns true if this node is valid; false otherwise.
@@ -60,9 +66,14 @@ public class DListNode extends ListNode {
    *  Performance:  runs in O(1) time.
    */
   public boolean isValidNode() {
-    return myList != null;
+    return true;
   }
-
+  public void setVisit(){
+      visited = true;
+  }
+  public boolean visited(){
+      return visited;
+  }
   /**
    *  next() returns the node following this node.  If this node is invalid,
    *  throws an exception.
@@ -179,5 +190,6 @@ public class DListNode extends ListNode {
     prev.next = next;
 
   }
+  
 
 }

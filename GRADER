@@ -83,7 +83,7 @@ implemented the project.  Your description should include:
        reach a node in the end goal. Check to make sure that newly
        added nodes have not been seen before- perhaps an alteration of
        the lockNode method.
-  5. Evaluation function. (Chris)
+  5. Evaluation function. (Sanket)
      public int boardEval()
      - This one is harder- The network structure lends itself well to
        a graph- perhaps edge count would be a reasonable heuristic.
@@ -163,9 +163,9 @@ implemented the project.  Your description should include:
         public DList getNetworks(Node n)
         /*Returns a DList of the network that contains the input Node n.*/
         
-        public DListNode[] connections(int x, int y)
+        public DList connections(int x, int y)
         /*Cast out in each possible direction. If you hit a tile of 
-          opposite color, stop. Create DListNode where the nodes are the
+          opposite color, stop. Create DList where the nodes are the
           connected chips.
         
         public int boardEval()

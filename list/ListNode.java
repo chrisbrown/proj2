@@ -30,7 +30,7 @@ public abstract class ListNode {
    *  Performance:  runs in O(1) time.
    */
   public boolean isValidNode() {
-    return myList != null;
+    return true;
   }
 
   /**
@@ -109,5 +109,8 @@ public abstract class ListNode {
 public Object getItem() {
 	return item;
 }
-
+  @Override
+  public String toString(){
+    return getItem().toString();
+}
 }

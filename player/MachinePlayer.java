@@ -18,7 +18,7 @@ public class MachinePlayer extends Player {
 	public int depth;
 	public int color;
 	public Board board;
-  public Player opponent;
+        public Player opponent;
 	public final boolean COMPUTER = true;
 	public final boolean HUMAN = false; 
 
@@ -29,7 +29,6 @@ public class MachinePlayer extends Player {
       depth = 3; //change this
       board = new Board(this);
   }
-
   // Creates a machine player with the given color and search depth.  Color is
   // either 0 (black) or 1 (white).  (White has the first move.)
   public MachinePlayer(int color, int searchDepth) {
@@ -44,61 +43,59 @@ public class MachinePlayer extends Player {
       Best bestchoice = moveHelp(COMPUTER, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, this.depth);
       return bestchoice.move();
   } 
-    //Assists in choosing the move by implementing minimax with alpha-beta pruning
-  private Best moveHelp(boolean side, double  a, double b, int searchdepth){
-      Best myBest = new Best();
-      Best reply;
-      double alpha = a;
-      double beta = b;
-      DList moveset = this.board.validMoves();
-      if(this.board.hasNetworks()){
-          return myBest;
-      }
-      // if at the bottom of the search, applies the score of the board to alpha/beta //
-      if(searchdepth == 0){
-        if(side == COMPUTER){
-          alpha = this.board.boardEval();
-        } else {
-          beta = this.board.boardEval();
+
+    private Best moveHelp(boolean side, double  a, double b, int searchdepth){
+        Best myBest = new Best();
+        Best reply;
+        double alpha = a;
+        double beta = b;
+        DList moveset = this.board.validMoves();
+        if(this.board.hasNetworks()){
+            return myBest;
         }
-      }
-      //determines scores within the searchdepth //
-      if(side == COMPUTER){
-          myBest.bestscore = alpha;
-      }else{
-          myBest.bestscore = beta;
-      }
-      //create a set of valid moves and find a move
-      ListNode node = moveset.front();
-      Move mv = (Move) node.getItem();
-      myBest.bestmove = mv;
-      //minimax wtih alpha/beta pruning to find the best move
-      while(mv != null && searchdepth >0){
-          this.board.makeMove(mv, color);
-          //go one level deeper in search
-          reply = moveHelp(!side, alpha, beta, searchdepth-1);
-          this.board.undo();
-          //alpha-beta pruning: set alpha or beta dependent on what the search layer is
-          if((side == COMPUTER) && (reply.score() >  myBest.score())){
-              myBest.bestmove = mv;
-              myBest.bestscore = reply.score();
-              alpha = reply.score();
-          }else if ((side == HUMAN) && (reply.score() < myBest.score())){
-              myBest.bestmove = mv;
-              myBest.bestscore = reply.score();
-              beta = reply.score();
+        if(searchdepth == 0){
+          if(side == COMPUTER){
+            alpha = this.board.boardEval();
+          } else {
+            beta = this.board.boardEval();
           }
-          //returns the Best when alpha is >= beta
-          if(alpha >= beta){
-              return myBest;
-          }
-          try {
-          node = node.next();
-          } catch (InvalidNodeException e) {}
-      }
-      //returns a move even if there is no Best move
-      return myBest;  
-  }
+        }
+        if(side == COMPUTER){
+            myBest.bestscore = alpha;
+        }else{
+            myBest.bestscore = beta;
+        }
+        ListNode node = moveset.front();
+        Move mv = (Move) node.getItem();
+        myBest.bestmove = mv;
+        while(mv != null && searchdepth >0){
+            if(color == 0){
+                this.board.makeMove(mv, 0);
+            }
+            else{
+                this.board.makeMove(mv,1);
+            
+            }
+            reply = moveHelp(!side, alpha, beta, searchdepth-1);
+            this.board.undo();
+            if((side == COMPUTER) && (reply.score() >  myBest.score())){
+                myBest.bestmove = mv;
+                myBest.bestscore = reply.score();
+                alpha = reply.score();
+            }else if ((side == HUMAN) && (reply.score() < myBest.score())){
+                myBest.bestmove = mv;
+                myBest.bestscore = reply.score();
+                beta = reply.score();
+            }
+            if(alpha >= beta){
+                return myBest;
+            }
+            try {
+            node = node.next();
+            } catch (InvalidNodeException e) {}
+        }
+        return myBest;  
+    }
 
   // If the Move m is legal, records the move as a move by the opponent
   // (updates the internal game board) and returns true.  If the move is
@@ -130,17 +127,23 @@ public class MachinePlayer extends Player {
   // player.  This method is used to help set up "Network problems" for your
   // player to solve.
   public boolean forceMove(Move m) {
-      if(this != null && this.board != null &&  this.board.isValidMove(m)){
-          if(color == 0){
-            this.board.makeMove(m,0);
+      if(this.board != null &&  this.board.isValidMove(m)){
+          if(m.moveKind == Move.STEP){
+              if( board.table[m.x2][m.y2] == null || ((Integer)board.table[m.x2][m.y2].getItem()) != color ){
+                  return false;
+              }
           }
-          else{
-            this.board.makeMove(m,1);
-          }
+          this.board.makeMove(m, color);
           return true;
       }else{
           return false;
       }
+  }
+  
+    @Override
+  public String toString(){
+      System.out.println("Player --> ");
+      return board.toString();
   }
 
 }
