@@ -74,7 +74,11 @@ public class MachinePlayer extends Player {
       myBest.bestmove = mv;
       //minimax wtih alpha/beta pruning to find the best move
       while(mv != null && searchdepth >0){
-          this.board.makeMove(mv);
+          if(color == 0){
+            this.board.makeMove(mv, 0);
+          }else{
+            this.board.makeMove(mv, 1);
+          }
           //go one level deeper in search
           reply = moveHelp(!side, alpha, beta, searchdepth-1);
           this.board.undo();
