@@ -13,16 +13,32 @@ public class Board{
     public DListNode[][] table;
     private Stack history;
     public MachinePlayer owner;
+    public final int N = 0;
+    public final int NE = 1;
+    public final int E = 2;
+    public final int SE = 3;
+    public final int S = 4;
+    public final int SW = 5;
+    public final int W = 6;
+    public final int NW = 7;
+    private int score = 0;
+    public boolean isUpdatingEnemy = false
     
-    public Board(){
-        table = new DListNode[DIMENSION][DIMENSION];
-    }
-    
+    // Create an 8x8 board with known player
     public Board(MachinePlayer p) {
         table = new DListNode[DIMENSION][DIMENSION];
         owner = p;
     }
-    //*find all connections at node on (x,y) *//	
+
+    // Returns the Opponents color
+    private int opponentColor(){
+        if(owner.color == 1){
+            return 0;
+        }
+        else
+            return 1;
+    }
+    // Find all connections at node on (x,y) 
     public DListNode[] connections(DListNode node){
             
         int x = -1;
@@ -35,7 +51,9 @@ public class Board{
                     y = c;
            }
         }
-           
+        if(x == -1 || y == -1){
+             System.out.println("Problem in connections");
+        }   
         DListNode[] connected = new DListNode[8];
         if(table[x][y] == null || table[x][y].getItem() == null){
                 return connected;
@@ -73,7 +91,8 @@ public class Board{
         }
         return connected;
     }
-               
+    
+    // Cast out in N direction from (x,y)           
     private DListNode[] castN(int x, int y, int color, DListNode[] connected){
         for(int j = y+1 ; j < DIMENSION; j++){
             if(table[x][j] == null && table[x][j].getItem() == null){
@@ -84,7 +103,8 @@ public class Board{
         }
         return connected;
     }
-       
+
+    // Cast out in S direction from (x,y)              
     private DListNode[] castS(int x, int y, int color, DListNode[] connected){
         for(int j = 0 ; j < y ; j++){
             if(table[x][j] == null && table[x][j].getItem() == null){
@@ -95,7 +115,8 @@ public class Board{
         }
         return connected;
     }
-       
+
+    // Cast out in E direction from (x,y)              
     private DListNode[] castE(int x, int y, int color, DListNode[] connected){
         for(int i = x+1 ; i < DIMENSION; i++){
             if(table[i][y] == null && table[i][y].getItem() == null){
@@ -106,7 +127,8 @@ public class Board{
         }
         return connected;
     }
-       
+    
+    // Cast out in W direction from (x,y)    
     private DListNode[] castW(int x, int y, int color, DListNode[] connected){
         for(int i = 0 ; i < x ; i++){
             if(table[i][y] == null && table[i][y].getItem() == null){
@@ -117,7 +139,8 @@ public class Board{
         }
         return connected;
     }
-       
+    
+    // Cast out in NE direction from (x,y)    
     private DListNode[] castNE(int x, int y, int color, DListNode[] connected){
         for(int i = x + 1, j = y + 1 ; i < DIMENSION && j < DIMENSION; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
@@ -128,6 +151,8 @@ public class Board{
         }
         return connected;
     }
+
+    // Cast out in SE direction from (x,y) 
     private DListNode[] castSE(int x, int y, int color, DListNode[] connected){
         for(int i = x + 1, j = 0 ; i < DIMENSION && j < y; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
@@ -138,6 +163,8 @@ public class Board{
         }
         return connected;
     }
+
+    // Cast out in NW direction from (x,y) 
     private DListNode[] castNW(int x, int y, int color, DListNode[] connected){
         for(int i = 0, j = y + 1 ; i < x && j < DIMENSION; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
@@ -148,6 +175,8 @@ public class Board{
         }
         return connected;
     }
+
+    // Cast out in SW direction from (x,y) 
     private DListNode[] castSW(int x, int y, int color, DListNode[] connected){    
         for(int i = 0, j = 0 ; i < x && j < y; i++, j++){
             if(table[i][j] == null && table[i][j].getItem() == null){
@@ -159,25 +188,26 @@ public class Board{
         return connected;
     }
 
+    // Create a DList of all valid moves on the current board
     public DList validMoves(){
         DList listOMoves = new DList();
         Move testMove;
         
         for(int r = 0; r < DIMENSION; r++){
             for(int c = 0; c < DIMENSION; c++){
-                if(table[r][c].getItem() == null){
+                if(table[r][c] == null){
                     testMove = new Move(r,c);
                     if(isValidMove(testMove)){
                         listOMoves.insertBack(testMove);
                     }
                 } else {
-                    if((int)table[r][c].getItem() == owner.color){
+                    if((Integer)table[r][c].getItem() == owner.color){
                         for(int x = 0; x < DIMENSION; x++){
                             for(int y = 0; y < DIMENSION; y++){
                                 if(x == r && y == c){
                                     continue;
                                 }
-                                else  if(table[r][c].getItem() == null){
+                                else  if(table[x][y] == null){
                                     testMove = new Move(x,y,r,c);
                                     if(isValidMove(testMove)){
                                         listOMoves.insertBack(testMove);
@@ -192,10 +222,15 @@ public class Board{
         return listOMoves;
     }
 
-    /** Enforces rules 1 and 2 **/
+    // Enforces rules 1 and 2 and 3
     public boolean isValidMove(Move m){
         int x = m.x1;
         int y = m.y1;
+        int color;
+        if(this.isUpdatingEnemy)
+            color = opponentColor();
+        else
+            color = owner.color;
         
         if((x == 0 && y == 0) 
            || (x == DIMENSION-1 && y == DIMENSION-1)
@@ -204,7 +239,7 @@ public class Board{
             return false;
         }
         
-        if(owner.color == 1){
+        if(color == 1){
             if(y == 0 || y == DIMENSION - 1){
                 return false;
             }
@@ -215,18 +250,33 @@ public class Board{
             }
         }
 
-        return ruleThree(m, m.x1, m.y1);
+        if(table[x][y] != null){
+            return false;
+        }
+        
+        return ruleFour(m, m.x1, m.y1);
     }
 
-    private boolean ruleThree(Move m, int oX, int oY){
-        DListNode history = null;
+    // Enforces rule 4
+    private boolean ruleFour(Move m, int oX, int oY){
+        int color;
+        if(this.isUpdatingEnemy)
+            color = opponentColor();
+        else
+            color = owner.color;
+        
+        table[m.x1][m.y1] = new DListNode(color);
+        
+        DListNode oldNode;
+        oldNode = null;
         if(m.moveKind == 0) {
             return true;
         }
-        if(m.moveKind == 2){
-            history = table[oX][oY];
+        if(m.moveKind == 2 && m.x1 == oX && m.y1 == oY){
+            oldNode = table[m.x2][m.y2];
             table[m.x2][m.y2] = null;
         }
+        
         int numSurrounds = 0;
         int xToCheck = 0;
         int yToCheck = 0;
@@ -236,38 +286,53 @@ public class Board{
                 if(r == 0 && c == 0) {
                     continue;
                 }
-                if(table[oX + r][oY + c].getItem() != null){
-                        numSurrounds++;
-                        xToCheck = oX + r;
-                        yToCheck = oY + c;
+                DListNode node = null;
+                try{
+                    node = table[oX + r][oY+c];
+                }
+                catch( ArrayIndexOutOfBoundsException e){}
+                if(node != null && ((Integer)node.getItem()) == color){
+                    numSurrounds++;
+                    xToCheck = oX + r;
+                    yToCheck = oY + c;
                 }
             }
         }
         
         if(numSurrounds > 1){
-            table[m.x2][m.y2] = history;
+            if(m.moveKind == 2){    
+                table[m.x2][m.y2] = oldNode;
+            }
+            table[m.x1][m.y1] = null;
             return false;
         }
 
         if(numSurrounds == 1){
-            if(xToCheck == m.x1 && yToCheck == m.x2){
-                table[m.x2][m.y2] = history;
+            if(xToCheck == m.x1 && yToCheck == m.y1){
+                if(m.moveKind == 2){    
+                    table[m.x2][m.y2] = oldNode;
+                }
+                table[m.x1][m.y1] = null;
                 return true;
             }
             else{
-                table[m.x2][m.y2] = history;
-                return ruleThree(m, xToCheck, yToCheck);
+                if(m.moveKind == 2){    
+                    table[m.x2][m.y2] = oldNode;
+                }
+                table[m.x1][m.y1] = null;
+                
+                return ruleFour(m, xToCheck, yToCheck);
             }
         } else {
-            table[m.x2][m.y2] = history;
+            if(m.moveKind == 2){    
+                table[m.x2][m.y2] = oldNode;
+            }
+            table[m.x1][m.y1] = null;
             return true;
         }
     }
 
-    private int checkColor(){
-        return owner.color;
-    }
-
+    // Applies the given Move m to the board
     public void makeMove(Move m){
         history.push(this);
     	if(m.moveKind == Move.ADD){
@@ -278,10 +343,13 @@ public class Board{
         }
     }
 
+    // Creates a copy of the given Board
     private void copy(Board board){
         table = board.table;
         owner = board.owner;
     }
+
+    // Undoes the last made Move
     public void undo(){
         Board b = this;
         try {
@@ -291,22 +359,28 @@ public class Board{
         }
         this.copy(b);
     }
+
+    // Checks if the current Board has a complete network
     public boolean hasNetworks(){
         return (getNetworks().length() != 0);  
     }
     /** Gets any current networks in the board. Assumes connections does
      *  not give any nodes in the same direction.
      **/
+
+    // Retrieves all of the Networks on the given Board
     public DList getNetworks() {
         DList networks = new DList();
         DListNode[] start = getStartNodes();
         DListNode[] end = getEndNodes();
-        if (goals == null) {
+        /*if (goals == null) {
             return networks;
-        }
+        }*/
         for (int i = 0; i < start.length; i++) {
             //Get a network from each start node.
-            DList network = checkConnections(start[i], end, 1);
+            DList currNet = new DList();
+            currNet.insertBack(start[i]);
+            DList network = checkConnections(start[i], end, 1, currNet);
             if (network != null) {
                 //If there is a network, add it to the list of networks.
                 networks.insertBack(network);
@@ -314,14 +388,18 @@ public class Board{
         }
         return networks;
     }
-    /** getNetwork recursive helper. **/
+
+    // getNetwork recursive helper. 
     private DList checkConnections(DListNode currNode, DListNode[] endGoal, int step
                                    , DList currNet) {
+        if(step >= 4){
+            score += step; //for every possible connection over 4 points, score increases by that connection's length
+        }
         DListNode[] cons = connections(currNode);
         //Base case. If the current node is an end goal, and is long enough, it is a network.
         if (contains(endGoal, currNode) && step >= 6){
             return currNet;
-        } else if (cons.length() == 0) { //No connections? No network!
+        } else if (cons.length == 0) { //No connections? No network!
             return null;
         } else { //Look for networks through the following connections.
             for (int i = 0; i < cons.length; i++) {
@@ -333,9 +411,11 @@ public class Board{
                     return newNet;
                 }
             }
+            return null;
         }
     }
-    /** Checks if a Node is in a DListNode array. */
+
+    // Checks if a Node is in a DListNode array. 
     private boolean contains(DListNode[] items, DListNode item) {
         for (int i = 0; i < items.length; i++) {
             if (items[i] == item) {
@@ -345,7 +425,7 @@ public class Board{
         return false;
     }
 
-    /** Gets the nodes in a goal for the current player. */
+    // Gets the nodes in a goal for the current player.
     private DListNode[] getStartNodes() {
         int goalSize = DIMENSION - 2;
         DListNode[] nodes = new DListNode[goalSize];
@@ -381,6 +461,7 @@ public class Board{
         }
     }
 
+    // Retrieves Start nodes for Networks
     private DListNode[] getStartNodes() {
         int goalSize = DIMENSION - 2;
         DListNode[] nodes = new DListNode[goalSize];
@@ -408,18 +489,123 @@ public class Board{
         }
     }
 
+    // Evaluates the current board
     public double boardEval() {
-        double score = 0.0;
+        for(int x = 0; x < DIMENSION; x++){
+            for(int y = 0; y < DIMENSION; y++){
+                if(table[x][y] != null){
+                    
+                    for(int r = -1; r <= 1; r++){
+                      for(int c = -1; c <= 1; c++){
+                         if(r == 0 && c == 0){
+                             continue;
+                         } 
+                         if(table[x+r][y+c] != null){
+                             score += 1; //2 points for each pair 
+                         }
+                      }  
+                    }
+                
+                }
+            }
+        }
         return score;
     }
 
-    public static void main (String args[]){
-		Player black = new MachinePlayer(0);
-		Player white = new MachinePlayer(1);
-		
-		black.forceMove(new Move(0,0));
-		white.forceMove(new Move(0,0));
+    
+    @Override
+    public String toString(){
+      String rv = "[\n";
+      for(int x = 0; x < this.DIMENSION; x++){
+          for(int y = 0; y < this.DIMENSION; y++){
+              if(table[x][y] != null)
+                rv += "| " + table[x][y].toString() + " |";
+              else
+                  rv += "| _ |";
+        }
+         rv += "\n"; 
+      }
+      rv += "]";
+      
+      return rv;
+        
     }
+    private static void testIsValidMove2(){
+        Player black = new MachinePlayer(0);
+        System.out.println("0: \n" + black);
+        
+        black.forceMove(new Move(3,3));
+        System.out.println("1: \n" + black);
+        
+        black.opponentMove(new Move(2,2));
+        System.out.println("2: \n" + black);
+        
+        black.forceMove(new Move(4,3));
+        System.out.println("3: \n" + black);
+        
+        black.opponentMove(new Move(2,3));
+        System.out.println("4: \n" + black);
+        
+        black.forceMove(new Move(5,3));
+        
+        System.out.println("5: True true true true false: \n" + black);
+        
+        
+    }
+    private static void testIsValidMove(){
+        Player black = new MachinePlayer(0);
 
+        black.forceMove(new Move(0,0));
+        System.out.println("Finishing placing (0,0)");
+        System.out.println("(0,0): \n" + black);
+
+        black.forceMove(new Move(3,2));
+        System.out.println("Finishing placing (3,2)");                
+        System.out.println("(3,2): \n" + black);
+
+        black.forceMove(new Move(3,4));
+        System.out.println("Finishing placing (3,4)");
+        black.forceMove(new Move(3,3));
+        System.out.println("Finishing placing (3,3)");
+        System.out.println("Cluster: \n" + black);
+
+
+        black.forceMove(new Move(2,2,3,4));
+        System.out.println("Finishing placing (2, 2)");
+
+
+        System.out.println("Step: \n" + black);
+
+        black.forceMove(new Move(3,4));
+        black.forceMove(new Move(3,3,2,2));
+
+
+        System.out.println("Step Cluster: \n" + black);
+
+    }
+    private static void testValidMoves(){
+        MachinePlayer black = new MachinePlayer(1);
+        
+        DList d = black.board.validMoves();
+        System.out.println("Empty: " + d);
+        
+        black.forceMove(new Move(3,4));
+        d = black.board.validMoves();
+        System.out.println("(3,4): " + d);
+    }
+    public static void testIsValidMove3(){
+        MachinePlayer black = new MachinePlayer(0);
+       // black.forceMove(new Move(0,1));
+        black.opponentMove(new Move(0,1));
+        System.out.println("(0,1): \n" + black);
+
+        
+    }
+  public static void main (String args[]){
+       
+   //    testIsValidMove();
+    //   testIsValidMove2(); 
+     //  testValidMoves();
+        testIsValidMove3(); 
+  }
  }
-

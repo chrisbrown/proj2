@@ -163,9 +163,9 @@ implemented the project.  Your description should include:
         public DList getNetworks(Node n)
         /*Returns a DList of the network that contains the input Node n.*/
         
-        public DListNode[] connections(int x, int y)
+        public DList connections(int x, int y)
         /*Cast out in each possible direction. If you hit a tile of 
-          opposite color, stop. Create DListNode where the nodes are the
+          opposite color, stop. Create DList where the nodes are the
           connected chips.
         
         public int boardEval()
